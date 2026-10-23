@@ -8,7 +8,7 @@ Version numbers are pre-1.0 while the firmware is in staged bring-up: the minor
 number tracks the build stage recorded in [`docs/stages.md`](docs/stages.md)
 (`0.10.x` == Stage 10, the Wi-Fi uploader).
 
-## [Unreleased]
+## [0.10.1] - 2026-10-23
 
 ### Added
 
@@ -19,39 +19,23 @@ number tracks the build stage recorded in [`docs/stages.md`](docs/stages.md)
 
 ## [0.10.0] - 2026-10-21
 
-First tagged release. The baseline is the **Stage 10 uploader** firmware in
-`firmware/stage10_upload/`: an ESP32-WROOM-32 reads a Renogy solar charge
-controller over Bluetooth LE (via the BT-1 dongle, NimBLE stack) and a DHT11 for
-ambient air, renders status on a 128×32 SSD1306 OLED, buffers samples in a
-144-slot queue, and POSTs them over TLS to the lab portal
-(`https://solar.example.com/api/ingest`), each upload signed with HMAC-SHA256
-and timestamped from SNTP. This release cuts a version baseline and records the
-production network migration below.
+Baseline: the **Stage 10 uploader** firmware in `firmware/stage10_upload/`. An
+ESP32-WROOM-32 reads a Renogy solar charge controller over Bluetooth LE (via the
+BT-1 dongle, NimBLE stack) and a DHT11 for ambient air, renders status on a
+128×32 SSD1306 OLED, buffers samples in a 144-slot queue, and POSTs them over TLS
+to an ingest endpoint, each upload signed with HMAC-SHA256 and timestamped from
+SNTP.
 
-### Changed
+### Configuration
 
-- **Wi-Fi network migrated from `MyWiFi-2.4G-EXT` to `MyWiFi-2.4G-EXT`.** The 2.4 GHz
-  SSID the ESP32 associates with at boot is defined by `WIFI_SSID` in
-  `firmware/stage10_upload/config.h` (tracked, non-secret). The matching WPA2
-  passphrase was rotated in the git-ignored `firmware/stage10_upload/secrets.h`
-  and is **not** part of this or any commit. No firmware logic changed — this is
-  a deployment/configuration change only. (`47e9efe`)
+- Deployment values live in `firmware/stage10_upload/config.h` (tracked):
+  `WIFI_SSID`, `BT1_MAC`, `INGEST_URL`, `DEVICE_ID`. They ship as
+  **placeholders** here — set them for your own system. Secrets
+  (`WIFI_PASSWORD`, `DEVICE_HMAC_KEY`) go in `firmware/stage10_upload/secrets.h`,
+  which is git-ignored and never committed; copy it from
+  [`firmware/common/secrets.example.h`](firmware/common/secrets.example.h).
+- A Wi-Fi SSID is a location hint (public wardriving databases map SSIDs to
+  approximate coordinates). If you fork this and commit a real SSID, keep the
+  repository private, or move `WIFI_SSID` into `secrets.h` first.
 
-### Verified
-
-- On-hardware acceptance after the migration: association at **RSSI −39 dBm**
-  (up from −62 dBm on the previous SSID), SNTP sync, a Renogy BT-1 BLE poll, and
-  ingest accepted by the lab portal with **HTTP 200**
-  (`{"ok":true,"accepted":1,...}`). Build: `arduino-cli` with
-  `esp32:esp32:esp32:PartitionScheme=huge_app`, flashed over
-  `/dev/cu.usbserial-0001`.
-
-### Security
-
-- `config.h` is intentionally tracked and must remain so **only while this
-  repository is private**. An SSID is a location hint (public wardriving
-  databases map SSIDs to approximate coordinates). If the repository is ever made
-  public, move `WIFI_SSID` back into `secrets.h` before doing so — see the header
-  comment in `config.h`. `secrets.h` (`WIFI_PASSWORD`, `DEVICE_HMAC_KEY`) remains
-  git-ignored and is never committed.
-
+[0.10.1]: https://github.com/Galaviz1/esp32-solar-monitor/releases/tag/v0.10.1
