@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 335" role="img" aria-label="Schematic: USB 5 V powers the 38-pin ESP32 board. 3V3 (row B, pin 1) feeds OLED VCC, GND (row A, pin 1) to GND, pin 21 (row A, pin 6) to SDA and pin 22 (row A, pin 3) to SCL, all counted from the antenna end. The SSD1306 at I2C address 0x3C has its pull-up resistors on the module.">
+<style>
+svg { font-family: "IBM Plex Mono", Menlo, Consolas, monospace; }
+text { fill: #17191a; font-size: 12px; }
+.t { font-family: Archivo, "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 15px; }
+.h { font-family: Archivo, "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 16px; }
+.m { fill: #5b625e; font-size: 11px; }
+.box { fill: #f4f5f2; stroke: #17191a; stroke-width: 1.5; }
+.w { fill: none; stroke-width: 2.5; }
+.pv { stroke: #c2382b; } .pg { stroke: #17191a; } .pd { stroke: #2a66c9; } .pc { stroke: #d49a00; }
+.tv { fill: #c2382b; font-weight: 600; } .tg { fill: #17191a; font-weight: 600; }
+.td { fill: #2a66c9; font-weight: 600; } .tc { fill: #a37600; font-weight: 600; }
+.board { fill: #eeede6; stroke: #cfccc0; stroke-width: 1.5; }
+.trench { fill: #dcdad1; }
+.red { stroke: #d0463a; stroke-width: 2; } .blue { stroke: #3a67c9; stroke-width: 2; }
+.hole { fill: #a8a699; } .idx { fill: #7d7b71; font-size: 10px; }
+.wire { fill: none; stroke-width: 5; stroke-linecap: round; }
+.pin { fill: #3a3a36; }
+.pcb { fill: #1d2733; } .can { fill: #b9bec5; stroke: #8b9097; } .usb { fill: #c8cbd0; stroke: #8b9097; }
+.pl { fill: #c9d2dc; font-size: 8px; } .pu { fill: #ffd34d; font-size: 8px; font-weight: 700; }
+.scr { fill: #08131f; } .st { fill: #7fd3ff; font-size: 9px; }
+</style>
+<rect width="860" height="335" fill="#ffffff"/>
+<text class="h" x="30" y="34">OLED to ESP32: schematic</text>
+<text class="m" x="30" y="52">4 wires, all 3.3 V, no level shifter. Name as printed · row and pin from the antenna end.</text>
+<rect class="box" x="30" y="120" width="120" height="70" rx="6"/>
+<text class="t" x="90" y="150" text-anchor="middle">USB</text>
+<text class="m" x="90" y="168" text-anchor="middle">5 V supply</text>
+<line class="w pv" x1="150" y1="155" x2="230" y2="155"/>
+<text class="m" x="190" y="145" text-anchor="middle">5 V</text>
+<rect class="box" x="230" y="80" width="230" height="200" rx="6"/>
+<text class="t" x="345" y="108" text-anchor="middle">ESP32, 38-pin USB-C</text>
+<text class="m" x="345" y="125" text-anchor="middle">WROOM-32 · DevKitC layout</text>
+<text class="m" x="240" y="159">USB / VIN</text>
+<rect class="box" x="640" y="80" width="190" height="200" rx="6"/>
+<text class="tv" x="450" y="164" text-anchor="end">3V3 · B1</text>
+<line class="w pv" x1="460" y1="160" x2="640" y2="160"/>
+<circle cx="460" cy="160" r="3.5" fill="#d8352a"/><circle cx="640" cy="160" r="3.5" fill="#d8352a"/>
+<text class="tv" x="650" y="164">VCC</text>
+<text class="tg" x="450" y="199" text-anchor="end">GND · A1</text>
+<line class="w pg" x1="460" y1="195" x2="640" y2="195"/>
+<circle cx="460" cy="195" r="3.5" fill="#1f1f1f"/><circle cx="640" cy="195" r="3.5" fill="#1f1f1f"/>
+<text class="tg" x="650" y="199">GND</text>
+<text class="td" x="450" y="234" text-anchor="end">21 · A6</text>
+<line class="w pd" x1="460" y1="230" x2="640" y2="230"/>
+<circle cx="460" cy="230" r="3.5" fill="#2a66c9"/><circle cx="640" cy="230" r="3.5" fill="#2a66c9"/>
+<text class="td" x="650" y="234">SDA</text>
+<text class="tc" x="450" y="269" text-anchor="end">22 · A3</text>
+<line class="w pc" x1="460" y1="265" x2="640" y2="265"/>
+<circle cx="460" cy="265" r="3.5" fill="#e0a800"/><circle cx="640" cy="265" r="3.5" fill="#e0a800"/>
+<text class="tc" x="650" y="269">SCL</text>
+<text class="m" x="550" y="153" text-anchor="middle">3.3 V</text>
+<text class="m" x="550" y="188" text-anchor="middle">0 V</text>
+<text class="m" x="550" y="223" text-anchor="middle">I²C data</text>
+<text class="m" x="550" y="258" text-anchor="middle">I²C clock</text>
+<text class="t" x="770" y="108" text-anchor="middle">SSD1306</text>
+<text class="m" x="770" y="125" text-anchor="middle">0.91″ 128×32</text>
+<text class="m" x="770" y="141" text-anchor="middle">I²C addr 0x3C</text>
+<text class="m" x="700" y="300" text-anchor="middle">pull-ups usually on the module</text>
+<text class="m" x="345" y="300" text-anchor="middle">A1 = row A, pin 1 from the antenna end.</text>
+<text class="m" x="345" y="315" text-anchor="middle">All four at the antenna end, none near USB.</text>
+</svg>

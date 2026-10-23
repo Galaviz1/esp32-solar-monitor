@@ -1,0 +1,5 @@
+# Host-side analysis only - nothing here runs on the ESP32.
+# Pinned to the last releases that support the macOS Command Line Tools
+# Python 3.7 this repo is analysed on; newer Pythons can drop the ceilings.
+numpy<1.22
+matplotlib<3.6

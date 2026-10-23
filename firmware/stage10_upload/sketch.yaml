@@ -1,0 +1,63 @@
+# Reproducible build definition for Stage 10 (arduino-cli >= 1.0).
+#
+# Captures the three things a fresh clone cannot guess and that are easy to get
+# wrong by hand:
+#
+#   1. the ESP32 core version and its (non-default) package index URL
+#   2. the NimBLE-Arduino dependency — Stage 10 does NOT build against the stock
+#      Bluedroid BLE library; see firmware/README.md for why
+#   3. PartitionScheme=huge_app — the default 4 MB layout is too small once
+#      Wi-Fi and TLS are linked in
+#
+# ⚠️ COSTS ~7.5 GB OF DISK THE FIRST TIME. Read before you run it.
+#
+# A profile build is deliberately isolated: arduino-cli ignores what you have
+# installed and downloads its own pinned copy of the platform. For esp32:esp32
+# that means EVERY chip variant (S2, S3, C3, C5, C6, H2, P4) plus both Xtensa
+# and RISC-V toolchains — about 7.5 GB into ~/Library/Arduino15/{internal,staging},
+# on top of the ~8 GB already there for the normal install. Measured 2026-09-18,
+# where it filled the disk to 0 bytes free mid-build.
+#
+# Reclaim it afterwards with:
+#   rm -rf ~/Library/Arduino15/internal ~/Library/Arduino15/staging
+# Both are caches; the normal (non-profile) build does not use them.
+#
+# So this profile is for CI or a clean machine, not day-to-day work here.
+#
+# Profile build (isolated, pinned, expensive):
+#   arduino-cli compile --profile esp32dev
+#   arduino-cli upload  --profile esp32dev -p /dev/cu.usbserial-0001
+#
+# Normal build (uses your installed core + library) — PREFER THIS LOCALLY:
+#   arduino-cli compile --fqbn esp32:esp32:esp32:PartitionScheme=huge_app stage10_upload
+#   arduino-cli upload  --fqbn esp32:esp32:esp32:PartitionScheme=huge_app \
+#                       -p /dev/cu.usbserial-0001 stage10_upload
+#
+# Still required and deliberately NOT in git: secrets.h in this folder. Copy
+# ../common/secrets.example.h and fill in WIFI_PASSWORD and DEVICE_HMAC_KEY.
+
+profiles:
+  esp32dev:
+    notes: ESP32-D0WD-V3 (WROOM-32 class) on a DevKit V1 board, CP2102 bridge
+    fqbn: esp32:esp32:esp32:PartitionScheme=huge_app
+    platforms:
+      - platform: esp32:esp32 (3.3.11)
+        platform_index_url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+    libraries:
+      - NimBLE-Arduino (2.5.1)
+      - Adafruit SSD1306 (2.5.17)
+      - Adafruit GFX Library (1.12.6)
+      - Adafruit BusIO (1.17.4)
+      - DHT sensor library (1.4.7)
+      - Adafruit Unified Sensor (1.1.15)
+
+# NO default_profile ON PURPOSE.
+#
+# Setting one makes arduino-cli use the isolated profile build for ORDINARY
+# compiles of this sketch, not just `--profile` ones — which silently
+# re-downloads the whole 7.2 GB toolchain into Arduino15/{internal,staging}.
+# That happened here on 2026-09-19 and took the disk from 7.6 GB free to 1.1 GB
+# without anyone asking for a profile build.
+#
+# Leaving it out keeps the profile strictly opt-in: plain `arduino-cli compile`
+# uses your installed core, and `--profile esp32dev` gets the pinned one.

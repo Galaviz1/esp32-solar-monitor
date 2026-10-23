@@ -1,0 +1,15 @@
+# Secrets — never commit Wi-Fi / device credentials (any sketch folder)
+**/secrets.h
+
+# Arduino / build artifacts
+build/
+*.bin
+*.elf
+*.map
+.vscode/
+.DS_Store
+
+# Local data captures (keep the dir, ignore large logs)
+data/*.csv
+data/*.jsonl
+!data/.gitkeep
